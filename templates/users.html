@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}用户列表{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>用户列表</h1>
+  <p class="muted">表 <code>"User"</code></p>
+  <table>
+    <thead><tr><th>user_id</th><th>user_name</th><th>phone</th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr><td>{{ r.user_id }}</td><td>{{ r.user_name }}</td><td>{{ r.phone or '' }}</td></tr>
+      {% else %}
+      <tr><td colspan="3">暂无数据</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

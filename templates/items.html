@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}商品列表与数据维护{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>商品列表</h1>
+  <p class="muted"><code>status=0</code> 未售；删除仅允许未售且无订单引用。</p>
+  <table>
+    <thead><tr><th>item_id</th><th>item_name</th><th>category</th><th>price</th><th>status</th><th>seller_id</th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td>{{ r.item_id }}</td>
+        <td>{{ r.item_name }}</td>
+        <td>{{ r.category }}</td>
+        <td>{{ r.price }}</td>
+        <td>{{ r.status }}</td>
+        <td>{{ r.seller_id }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6">暂无数据</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>插入新商品</h2>
+  <form method="post" action="{{ url_for('action_item_create') }}">
+    <div class="row">
+      <div><label>item_id</label><input name="item_id" required placeholder="如 i006" /></div>
+      <div><label>item_name</label><input name="item_name" required /></div>
+      <div><label>category</label><input name="category" required placeholder="Books / DailyGoods …" /></div>
+      <div><label>price</label><input name="price" type="number" step="0.01" min="0" required /></div>
+      <div><label>seller_id</label>
+        <select name="seller_id" required>
+          {% for u in users %}<option value="{{ u.user_id }}">{{ u.user_id }} — {{ u.user_name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div><label>&nbsp;</label><button type="submit">插入</button></div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h2>修改商品价格</h2>
+  <form method="post" action="{{ url_for('action_item_update_price') }}">
+    <div class="row">
+      <div><label>item_id</label>
+        <select name="item_id" required>
+          {% for r in rows %}<option value="{{ r.item_id }}">{{ r.item_id }}</option>{% endfor %}
+        </select>
+      </div>
+      <div><label>新价格</label><input name="price" type="number" step="0.01" min="0" required /></div>
+      <div><label>&nbsp;</label><button type="submit">更新</button></div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h2>删除未售商品</h2>
+  <form method="post" action="{{ url_for('action_item_delete') }}" onsubmit="return confirm('确认删除？需满足 status=0 且无订单。');">
+    <div class="row">
+      <div><label>item_id</label>
+        <select name="item_id" required>
+          {% for r in rows %}
+            {% if r.status == 0 %}<option value="{{ r.item_id }}">{{ r.item_id }} — {{ r.item_name }}</option>{% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div><label>&nbsp;</label><button type="submit" class="danger">删除</button></div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h2>购买（事务：行锁 + 下单 + 置已售）</h2>
+  <form method="post" action="{{ url_for('action_item_purchase') }}">
+    <div class="row">
+      <div><label>item_id（须未售）</label>
+        <select name="item_id" required>
+          {% for r in rows %}
+            {% if r.status == 0 %}<option value="{{ r.item_id }}">{{ r.item_id }} — {{ r.item_name }}</option>{% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div><label>buyer_id</label>
+        <select name="buyer_id" required>
+          {% for u in users %}<option value="{{ u.user_id }}">{{ u.user_id }} — {{ u.user_name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div><label>order_date</label><input name="order_date" type="date" /></div>
+      <div><label>&nbsp;</label><button type="submit">购买</button></div>
+    </div>
+    <p class="muted">未选日期则使用当天。若商品已售会回滚并提示。</p>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}SQL 查询演示 — 校园二手交易平台{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>作业查询与聚合演示</h1>
+  <p class="muted">以下每个链接执行一条真实 <code>SELECT</code>，结果以表格展示。类别「生活用品」在种子数据中为 <code>DailyGoods</code>（与说明文档方案 A 一致）。</p>
+</div>
+
+<div class="card">
+  <h2>四·三 — 基本查询</h2>
+  <ul>
+    {% for q in basic_queries %}
+    <li><a href="{{ url_for('page_query', query_id=q.id) }}">{{ q.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="card">
+  <h2>四·四 — 连接查询</h2>
+  <ul>
+    {% for q in join_queries %}
+    <li><a href="{{ url_for('page_query', query_id=q.id) }}">{{ q.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="card">
+  <h2>四·五 — 聚合查询</h2>
+  <ul>
+    {% for q in agg_queries %}
+    <li><a href="{{ url_for('page_query', query_id=q.id) }}">{{ q.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

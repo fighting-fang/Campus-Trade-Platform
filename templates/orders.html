@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}订单列表{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>订单列表</h1>
+  <p class="muted">含商品名、买家姓名（JOIN 展示）</p>
+  <table>
+    <thead><tr><th>order_id</th><th>item_id</th><th>item_name</th><th>buyer_id</th><th>buyer_name</th><th>order_date</th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td>{{ r.order_id }}</td>
+        <td>{{ r.item_id }}</td>
+        <td>{{ r.item_name }}</td>
+        <td>{{ r.buyer_id }}</td>
+        <td>{{ r.buyer_name }}</td>
+        <td>{{ r.order_date }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6">暂无数据</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

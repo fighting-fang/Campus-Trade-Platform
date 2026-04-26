@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}校园二手交易平台{% endblock %}</title>
+  <style>
+    :root { --bg: #f6f7fb; --card: #fff; --text: #1a1d26; --muted: #5c6370; --accent: #2563eb; --border: #e2e5ec; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+    header { background: var(--card); border-bottom: 1px solid var(--border); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 1rem 1.25rem; }
+    nav a { margin-right: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+    nav a:hover { text-decoration: underline; }
+    main.wrap { padding-top: 1.25rem; padding-bottom: 2rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+    h1 { font-size: 1.35rem; margin: 0 0 0.5rem; }
+    h2 { font-size: 1.1rem; margin: 0 0 0.75rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; }
+    th { background: #eef1f8; }
+    .muted { color: var(--muted); font-size: 0.875rem; }
+    .flash { padding: 0.65rem 0.85rem; border-radius: 8px; margin-bottom: 1rem; }
+    .flash.ok { background: #ecfdf3; border: 1px solid #bbf7d0; color: #166534; }
+    .flash.err { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    form.inline { display: inline; }
+    fieldset { border: 1px solid var(--border); border-radius: 8px; margin: 0 0 1rem; padding: 0.75rem 1rem; }
+    legend { font-weight: 600; padding: 0 0.35rem; }
+    label { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 0.35rem; }
+    input, select, button { font: inherit; padding: 0.35rem 0.5rem; margin-top: 0.15rem; }
+    button { cursor: pointer; background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 0.4rem 0.75rem; }
+    button.secondary { background: #64748b; }
+    button.danger { background: #dc2626; }
+    .row { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: flex-end; }
+    .row > div { min-width: 120px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <a href="{{ url_for('page_home') }}">首页</a>
+        <a href="{{ url_for('page_items') }}">商品</a>
+        <a href="{{ url_for('page_users') }}">用户</a>
+        <a href="{{ url_for('page_orders') }}">订单</a>
+        <a href="{{ url_for('page_queries_hub') }}">SQL 查询</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    {% if flash_ok %}<div class="flash ok">{{ flash_ok }}</div>{% endif %}
+    {% if flash_err %}<div class="flash err">{{ flash_err }}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

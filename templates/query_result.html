@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — SQL 查询{% endblock %}
+{% block content %}
+<div class="card">
+  <p class="muted"><a href="{{ url_for('page_queries_hub') }}">← 返回查询列表</a></p>
+  <h1>{{ title }}</h1>
+  <h2 class="muted" style="font-size:0.95rem;font-weight:600;margin-top:0.5rem;">执行的 SQL</h2>
+  <pre style="overflow:auto;background:#0f172a;color:#e2e8f0;padding:0.85rem 1rem;border-radius:8px;font-size:0.8rem;line-height:1.45;">{{ sql }}</pre>
+</div>
+
+<div class="card">
+  <h2>查询结果（{{ rows|length }} 行）</h2>
+  {% if columns %}
+  <table>
+    <thead>
+      <tr>{% for c in columns %}<th>{{ c }}</th>{% endfor %}</tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        {% for c in columns %}
+        <td>{% if r[c] is not none %}{{ r[c] }}{% else %}<span class="muted">NULL</span>{% endif %}</td>
+        {% endfor %}
+      </tr>
+      {% else %}
+      <tr><td colspan="{{ columns|length }}">无数据</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">无列信息</p>
+  {% endif %}
+</div>
+{% endblock %}
