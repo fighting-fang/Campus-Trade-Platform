@@ -3,3 +3,4 @@ uvicorn[standard]
 jinja2
 python-dotenv
 psycopg2-binary
+psycopg_pool
